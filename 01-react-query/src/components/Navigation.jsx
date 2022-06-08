@@ -15,6 +15,9 @@ const Navigation = () => {
 					<Nav className="ms-auto">
 						<Nav.Link as={NavLink} to="/random-dad-joke">Random Dad Joke</Nav.Link>
 					</Nav>
+					<Nav className="ms-auto">
+						<Nav.Link as={NavLink} to="/random-dog">Random Dog</Nav.Link>
+					</Nav>
 				</Navbar.Collapse>
 			</Container>
 		</Navbar>
