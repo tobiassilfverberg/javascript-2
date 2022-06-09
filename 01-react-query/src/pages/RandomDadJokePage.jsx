@@ -1,21 +1,25 @@
 import Container from 'react-bootstrap/Container'
 import { useQuery } from 'react-query'
-import { getRandomDadJoke } from '../services/ICanHazDadJokeAPI'
+import { getRandomJoke } from '../services/DadJokeAPI'
 
 const RandomDadJokePage = () => {
-	const { isLoading, isError, error, data } = useQuery('random-dad-joke', getRandomDadJoke)
+	const { isLoading, isError, error, data } = useQuery('random-dad-joke', getRandomJoke)
 
 	return (
 		<Container className="py-3">
 
-			<h1>Random dad joke</h1>
+			<h1>Random Dad Joke</h1>
 
 			{isLoading && (<p>Loading dad joke...</p>)}
 
-			{isError && (<p>An error occoured: {error.message}</p>)}
+			{isError && (<p>An error occurred: {error.message}</p>)}
 
-			{data && (<p> {data.joke} </p> )}
-			
+			{data && data.body.map(joke => (
+				<div key={joke._id} className="text-center my-5">
+					<p className="h3">{joke.setup}</p>
+					<p className="h4">{joke.punchline}</p>
+				</div>
+			))}
 		</Container>
 	)
 }

@@ -1,4 +1,3 @@
-
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
@@ -13,6 +12,7 @@ const Navigation = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
+						<Nav.Link as={NavLink} to="/i-can-haz-dad-joke">I Can Haz Dad Joke?</Nav.Link>
 						<Nav.Link as={NavLink} to="/random-dad-joke">Random Dad Joke</Nav.Link>
 						<Nav.Link as={NavLink} to="/random-dog">Random Dog</Nav.Link>
 					</Nav>
