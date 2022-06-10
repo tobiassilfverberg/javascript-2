@@ -10,7 +10,9 @@ import CharacterCard from '../../components/CharacterCard'
 
 const CharactersPage = () => {
 	const [page, setPage] = useState(1)
-	const { data, error, isError, isLoading } = useQuery(['rm-characters', page], getCharacters)
+	const { data, error, isError, isLoading, isPreviousData } = useQuery(['rm-characters', page], getCharacters, {
+		keepPreviousData: true
+	})
 
 	return (
 		<Container className="py-3">
@@ -37,7 +39,7 @@ const CharactersPage = () => {
 
 					<div className="pagination d-flex justify-content-between align-items-center mt-4">
 						<Button 
-							disabled={!data.info.prev}
+							disabled={isPreviousData || !data.info.prev}
 							variant="primary"
 							onClick={() => setPage(currentPage => currentPage - 1)}
 						>Previous Page</Button>
@@ -45,7 +47,7 @@ const CharactersPage = () => {
 						<span> Page: {page} / {data.info.pages} </span> 
 
 						<Button 
-							disabled={!data.info.next}
+							disabled={isPreviousData || !data.info.next}
 							variant="primary"
 							onClick={() => setPage(currentPage => currentPage + 1)}
 						>Next Page</Button>
