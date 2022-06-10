@@ -1,11 +1,11 @@
 import Container from 'react-bootstrap/Container'
 
-const HomePage = () => {
+const PageNotFound = () => {
 	return (
 		<Container className="py-3">
-			HomePage
+			Sorry, that page could not be found.
 		</Container>
 	)
 }
 
-export default HomePage
+export default PageNotFound

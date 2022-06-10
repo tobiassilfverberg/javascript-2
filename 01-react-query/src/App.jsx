@@ -1,26 +1,28 @@
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { Routes, Route } from 'react-router-dom'
+import GlobalFetchingSpinner from './components/GlobalFetchingSpinner'
 import Navigation from './components/Navigation'
 import HomePage from './pages/HomePage'
-import NotFound from './pages/NotFound'
+import PageNotFound from './pages/PageNotFound'
 import ICanHazDadJokePage from './pages/ICanHazDadJokePage'
-import RandomDadJokePage from './pages/RandomDadJokePage'
 import JokePage from './pages/JokePage'
-import RandomDog from './pages/RandomDog'
+import RandomDadJokePage from './pages/RandomDadJokePage'
+import RandomDogPage from './pages/RandomDogPage'
 import './assets/scss/App.scss'
 
 const App = () => {
 	return (
 		<div id="App">
 			<Navigation />
+			<GlobalFetchingSpinner />
 
 			<Routes>
 				<Route path="/" element={<HomePage />} />
 				<Route path="/i-can-haz-dad-joke" element={<ICanHazDadJokePage />} />
 				<Route path="/random-dad-joke" element={<RandomDadJokePage />} />
-				<Route path="/random-dog" element={<RandomDog />} />
+				<Route path="/random-dog" element={<RandomDogPage />} />
 				<Route path="/joke/:type" element={<JokePage />} />
-				<Route path="*" element={<NotFound />} />
+				<Route path="*" element={<PageNotFound />} />
 			</Routes>
 
 			<ReactQueryDevtools position='bottom-right' />
