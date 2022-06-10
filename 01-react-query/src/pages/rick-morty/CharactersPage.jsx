@@ -1,7 +1,10 @@
 import Alert from 'react-bootstrap/Alert'
 import Container from 'react-bootstrap/Container'
+import Col from 'react-bootstrap/Col'
+import Row from 'react-bootstrap/Row'
 import { useQuery } from 'react-query'
 import { getCharacters } from '../../services/RickMortyAPI'
+import CharacterCard from '../../components/CharacterCard'
 
 const CharactersPage = () => {
 	const { data, error, isError, isLoading } = useQuery('rm-characters', getCharacters)
@@ -22,11 +25,13 @@ const CharactersPage = () => {
 			}
 
 			{data?.results && (
-				<ul>
+				<Row>
 					{data.results.map(character => (
-						<li key={character.id}>{character.name}</li>
+						<Col lg={3} md={4} sm={6} key={character.id}>
+							<CharacterCard character={character} />
+						</Col>
 					))}
-				</ul>
+				</Row>
 			)}
 		</Container>
 	)
