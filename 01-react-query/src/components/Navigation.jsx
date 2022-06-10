@@ -13,7 +13,11 @@ const Navigation = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
-						<Nav.Link as={NavLink} to="/random-dog">Dog</Nav.Link>
+					<Nav.Link as={NavLink} to="/random-dog">Dog</Nav.Link>
+
+						<NavDropdown title="Rick & Morty" id="basic-nav-dropdown">
+							<NavDropdown.Item as={NavLink} to="/rick-morty/characters">Characters</NavDropdown.Item>
+						</NavDropdown>
 
 						<NavDropdown title="Jokes" id="basic-nav-dropdown">
 							<NavDropdown.Item as={NavLink} to="/i-can-haz-dad-joke">I Can Haz Dad Joke?</NavDropdown.Item>
