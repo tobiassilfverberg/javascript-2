@@ -19,7 +19,9 @@ const getTodos = async () => {
 /**
  * Get a single todo
  */
-const getTodo = async (id) => {
+const getTodo = async ({ queryKey }) => {
+	const [_key, { id }] = queryKey
+	
 	const res = await axios.get(`${BASE_URL}/todos/${id}`)
 	// await sleep(1500)
 	return res.data

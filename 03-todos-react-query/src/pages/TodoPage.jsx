@@ -1,42 +1,41 @@
-import { useState, useEffect } from 'react'
 import Button from 'react-bootstrap/Button'
 import { Link, useParams } from 'react-router-dom'
 import TodosAPI from '../services/TodosAPI'
+import { useQuery } from 'react-query'
 
 const TodoPage = () => {
-	const [todo, setTodo] = useState()
 	const { id } = useParams()
-
-	const getTodo = async (id) => {
-		const data = await TodosAPI.getTodo(id)
-		setTodo(data)
-	}
+	const {data, error, isError, isLoading, isSuccess} = useQuery(['todo', {id}], TodosAPI.getTodo)
 
 	// Toggle the completed status of a todo in the api
-	const toggleTodo = async () => {
-		await TodosAPI.updateTodo(id, {
-			completed: !todo.completed
-		})
-		getTodo(id)
-	}
-
-	useEffect(() => {
-		getTodo(id)
-	}, [id])
-
-	if (!todo) {
-		return <p>Loading...</p>
-	}
+	// const toggleTodo = async () => {
+	// 	await TodosAPI.updateTodo(id, {
+	// 		completed: !data.completed
+	// 	})
+	// 	getTodo(id)
+	// }
 
 	return (
-		<div>
-			<h1>{todo.title}</h1>
+		<>
+			{isLoading && (
+				<div>
+					Loading...
+				</div>
+			)}
 
-			<p><strong>Status:</strong> {todo.completed ? 'Completed' : 'Not completed'}</p>
+			{isError && (<p>An error occured: {error.message}</p>)}
 
-			<Button variant="success" onClick={toggleTodo}>Toggle</Button>
-			<Button variant="warning" as={Link} to={`/todos/${id}/edit`}>Edit</Button>
-		</div>
+			{isSuccess && (
+				<div>
+					<h1>{data.title}</h1>
+
+					<p><strong>Status:</strong> {data.completed ? 'Completed' : 'Not completed'}</p>
+		
+					<Button variant="success" /* onClick={toggleTodo} */>Toggle</Button>
+					<Button variant="warning" as={Link} to={`/todos/${id}/edit`}>Edit</Button>
+				</div>
+			)}	
+		</>
 	)
 }
 
