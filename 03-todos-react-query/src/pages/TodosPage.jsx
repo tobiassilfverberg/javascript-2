@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { Link } from 'react-router-dom'
 import TodosAPI from '../services/TodosAPI'
+import { useQuery } from 'react-query'
+// import FadeLoader from 'react-spinners/FadeLoader'
 
 const TodosPage = () => {
-	const [todos, setTodos] = useState([])
-
 	const getTodos = async () => {
 		// Get todos from api
 		const data = await TodosAPI.getTodos()
@@ -17,21 +16,26 @@ const TodosPage = () => {
 		data.sort((a,b) => a.completed - b.completed)
 
 		// update todos state
-		setTodos(data)
+		return data
 	}
 
-	// Get todos from api when component is first mounted
-	useEffect(() => {
-		getTodos()
-	}, [])
+	const {data, isError, error, isLoading } = useQuery('todos', getTodos)
 
 	return (
 		<>
 			<h1>Todos</h1>
 
-			{todos.length > 0 && (
+			{isLoading && (
+				<div>
+					Loading...
+				</div>
+			)}
+
+			{isError && (<p>An error occured: {error.message}</p>)}
+
+			{data && (
 				<ListGroup className="todolist">
-					{todos.map(todo =>
+					{data.map(todo =>
 						<ListGroup.Item
 							action
 							as={Link}
@@ -45,7 +49,7 @@ const TodosPage = () => {
 				</ListGroup>
 			)}
 
-			{todos.length === 0 && (
+			{!data && !isLoading && (
 				<p className="status">No todos 🥳!</p>
 			)}
 		</>
