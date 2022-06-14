@@ -7,7 +7,7 @@ import HomePage from './pages/HomePage'
 import NotFound from './pages/NotFound'
 import TodosPage from './pages/TodosPage'
 import TodoPage from './pages/TodoPage'
-import { ReactQueryDevTools } from 'react-query/devtools'
+import { ReactQueryDevtools } from 'react-query/devtools'
 import 'bootstrap/dist/css/bootstrap.css'
 import './App.css'
 
@@ -27,7 +27,7 @@ const App = () => {
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 
-				<ReactQueryDevTools position="bottom-left" />
+				<ReactQueryDevtools position="bottom-left" />
 			</Container>
 		</div>
 	)
