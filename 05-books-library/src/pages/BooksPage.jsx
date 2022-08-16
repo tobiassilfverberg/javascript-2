@@ -1,16 +1,9 @@
-import { useQuery } from 'react-query'
-import BooksApi from '../services/BooksAPI' 
 import BookList from '../components/BookList'
 import Container from 'react-bootstrap/Container'
+import useBooks from '../hooks/useBooks'
 
 const BooksPage = () => {
-	const getBooks = async () => {
-		const data = await BooksApi.getBooks()
-
-		return data
-	}
-
-	const { data, error, isError, isLoading } = useQuery("books", getBooks)
+	const { data, error, isError, isLoading } = useBooks()
 
 	return (
 		<Container className="py-3">
