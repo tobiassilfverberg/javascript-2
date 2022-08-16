@@ -4,6 +4,7 @@ import HomePage from './pages/HomePage'
 import NotFound from './pages/NotFound'
 import './assets/scss/App.scss'
 import BooksPage from './pages/BooksPage'
+import AuthorsPage from './pages/AuthorsPage'
 
 function App() {
 	return (
@@ -12,8 +13,9 @@ function App() {
 
 			<Routes>
 				<Route path="/" element={<HomePage />} />
-				<Route path="*" element={<NotFound />} />
+				<Route path="/authors" element={<AuthorsPage />} />
 				<Route path="/books" element={<BooksPage />} />
+				<Route path="*" element={<NotFound />} />
 			</Routes>
 		</div>
 	)
