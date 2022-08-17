@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import Container from 'react-bootstrap/Container'
 import LoadingSpinner from '../components/LoadingSpinner'
 import WarningAlert from '../components/alerts/WarningAlert'
-import BasicTable from '../components/BasicTable'
+import SortableTable from '../components/SortableTable'
 import useBooks from '../hooks/useBooks'
 
 const BooksPage = () => {
@@ -37,7 +37,7 @@ const BooksPage = () => {
 
 			{isError && <WarningAlert message={error.message} />}
 
-			{books && <BasicTable columns={columns} data={books} />}
+			{books && <SortableTable columns={columns} data={books} />}
 		</Container>
 	)
 }
