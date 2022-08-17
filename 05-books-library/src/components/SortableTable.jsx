@@ -18,12 +18,14 @@ const SortableTable = ({ columns, data }) => {
 						{headerGroup.headers.map(column => (
 							<th {...column.getHeaderProps( column.getSortByToggleProps() )}>
 								{column.render('Header')}
+								{' '}
+
 								{/* Add a sort direction indicator */}
 								<span>
 									{column.isSorted
 										? column.isSortedDesc 
-											? '👎'
-											: '👍'
+											? '⬇'
+											: '⬆'
 										: ''
 									}
 								</span>
