@@ -1,29 +1,23 @@
 import Container from 'react-bootstrap/Container'
-import AuthorsList from '../components/AuthorsList'
+import LoadingSpinner from '../components/LoadingSpinner'
+import WarningAlert from '../components/alerts/WarningAlert'
+import AuthorList from '../components/AuthorList'
 import useAuthors from '../hooks/useAuthors'
 
-const BooksPage = () => {
-	const { data, error, isError, isLoading } = useAuthors()
+const AuthorsPage = () => {
+	const { data: authors, error, isError, isLoading } = useAuthors()
 
 	return (
 		<Container className="py-3">
-			<h1> My Authors </h1>
+			<h1>Authors</h1>
 
-			{isLoading && (
-				<div>
-					Loading...
-				</div>
-			)}
+			{isLoading && <LoadingSpinner />}
 
-			{isError && (
-				<div>
-					An error has occured... {error.message}
-				</div>
-			)}
+			{isError && <WarningAlert message={error.message} />}
 
-			{data && <AuthorsList authors={data} />}
+			{authors && <AuthorList authors={authors} />}
 		</Container>
 	)
 }
 
-export default BooksPage
+export default AuthorsPage

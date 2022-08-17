@@ -1,15 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { BrowserRouter } from 'react-router-dom'
-import { QueryClient, QueryClientProvider} from 'react-query'
 import App from './App'
 
 const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
 			refetchOnWindowFocus: false,
-			staleTime: 1000 * 60 * 60, // 1 hour
-			cacheTime: 1000 * 60 * 60, // 1 hour
+			staleTime: 5 * 60 * 1000, // 5 minutes
+			cacheTime: 15 * 60 * 1000, // 15 minutes
 		}
 	}
 })
