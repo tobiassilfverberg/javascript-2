@@ -1,4 +1,6 @@
 import { useMemo } from 'react'
+import Button from 'react-bootstrap/Button'
+import { Link } from 'react-router-dom'
 import Container from 'react-bootstrap/Container'
 import LoadingSpinner from '../components/LoadingSpinner'
 import WarningAlert from '../components/alerts/WarningAlert'
@@ -17,6 +19,19 @@ const AuthorsPage = () => {
 			{
 				Header: 'Date of Birth', 
 				accessor: 'date_of_birth'
+			},
+			{
+				Header: 'Actions',
+				Cell: ({ row: { original: author } }) => (
+					<Button
+						variant="primary"
+						size="sm"
+						as={Link}
+						to={`/authors/${author.id}`}
+					>
+						Show
+					</Button>
+				)
 			},
 		]
 	}, [])
