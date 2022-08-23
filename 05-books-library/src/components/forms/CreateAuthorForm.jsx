@@ -2,27 +2,14 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import { useForm } from 'react-hook-form'
-import { useMutation, useQueryClient } from 'react-query'
-import BooksAPI from '../../services/BooksAPI'
+import useCreateAuthor from '../../hooks/useCreateAuthor'
 
 const CreateAuthorForm = () => {
 	const { register, handleSubmit, formState: { errors } } = useForm()
-	const queryClient = useQueryClient()
-	const createAuthorMutation = useMutation(BooksAPI.createAuthor, {
-		onSuccess: () => {
-			// invalidate data
-			queryClient.invalidateQueries("authors")
-		}
-	})
-
-	const onCreateAuthor = data => {
-		// run mutation
-		createAuthorMutation.mutate(data)
-
-	}
+	const createAuthorMutation = useCreateAuthor()
 
 	return (
-		<Form onSubmit={handleSubmit(onCreateAuthor)}>
+		<Form onSubmit={handleSubmit( createAuthorMutation.mutate )}>
 			{createAuthorMutation.isSuccess && <Alert variant="success">Author created</Alert>}
 			{createAuthorMutation.isError && <Alert variant="warning">An error occured</Alert>}
 
