@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import { ToastContainer } from 'react-toastify'
 import Navigation from './components/Navigation'
 import AuthorPage from './pages/AuthorPage'
 import AuthorsPage from './pages/AuthorsPage'
@@ -22,6 +23,7 @@ function App() {
 			</Routes>
 
 			<ReactQueryDevtools />
+			<ToastContainer />
 		</div>
 	)
 }
