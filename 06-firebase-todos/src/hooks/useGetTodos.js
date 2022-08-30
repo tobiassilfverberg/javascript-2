@@ -1,8 +1,7 @@
-
 import useGetCollection from './useGetCollection'
 
-const useGetTodos = async () => {
-	return await useGetCollection('todos')
+const useGetTodos = () => {
+	return useGetCollection('todos')
 }
 
 export default useGetTodos

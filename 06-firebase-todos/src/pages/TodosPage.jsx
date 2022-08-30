@@ -6,20 +6,7 @@ import { Link } from 'react-router-dom'
 import useGetTodos from '../hooks/useGetTodos'
 
 const TodosPage = () => {
-	const [todos, setTodos] = useState([])
-	const [loading, setLoading] = useState(true)
-
-	useEffect(() => {
-		const getSnapshot = async () => {
-			setLoading(true)
-			const data = await useGetTodos()
-
-			setTodos(data)
-			setLoading(false)
-		}
-
-		getSnapshot()
-	}, [])
+	const { data: todos, loading } = useGetTodos()
 
 	return (
 		<Container className="py-3">
