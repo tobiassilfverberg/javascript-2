@@ -1,19 +1,8 @@
-import { collection, getDocs } from 'firebase/firestore'
-import { db } from '../firebase'
+
+import useGetCollection from './useGetCollection'
 
 const useGetTodos = async () => {
-	// get reference to collection 'todos' 
-	const ref = collection(db, 'todos')
-	const snapshot = await getDocs(ref)
-
-	const data = snapshot.docs.map((doc) => {
-		return {
-			id: doc.id,
-			...doc.data(), // title, completed
-		}
-	})
-
-	return data
+	return await useGetCollection('todos')
 }
 
 export default useGetTodos
