@@ -6,23 +6,24 @@ const useGetDocument = (collection, id) => {
 	const [data, setData] = useState({})
 	const [loading, setLoading] = useState(true)
 
+	const getSnapshot = async () => {
+		setLoading(true)
+
+		const ref = doc(db, collection, id)
+		const snapshot = await getDoc(ref)
+
+		setData(snapshot.data())
+		setLoading(false)
+	}
+
 	useEffect(() => {
-		const getSnapshot = async () => {
-			setLoading(true)
-
-			const ref = doc(db, collection, id)
-			const snapshot = await getDoc(ref)
-
-			setData(snapshot.data())
-			setLoading(false)
-		}
-
 		getSnapshot()
 	}, [])
 
 	return {
 		data,
-		loading
+		loading,
+		getSnapshot,
 	}
 }
 

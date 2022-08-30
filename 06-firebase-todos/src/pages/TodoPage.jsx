@@ -6,7 +6,7 @@ import useGetTodo from '../hooks/useGetTodo'
 
 const TodoPage = () => {
 	const { id } = useParams()
-	const { data, loading } = useGetTodo(id)
+	const { data, loading, getSnapshot: getData } = useGetTodo(id)
 	
 	return (
 		<Container className="py-3">
@@ -16,7 +16,7 @@ const TodoPage = () => {
 			<div className="d-flex justify-content-between align-items-start mb-3">
 				{data && (<h1>{data.title}</h1>)}
 
-				<Button onClick={() => {}}>Refresh</Button>
+				<Button onClick={() => {getData()}}>Refresh</Button>
 			</div>
 
 			<ButtonGroup className="todo-actions">
