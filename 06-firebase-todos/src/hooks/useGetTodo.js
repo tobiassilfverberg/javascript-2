@@ -1,7 +1,7 @@
 import useGetDocument from './useGetDocument'
 
-const useGetTodo = async (id) => {
-	return await useGetDocument('todos', id)
+const useGetTodo = (id) => {
+	return useGetDocument('todos', id)
 }
 
 export default useGetTodo
