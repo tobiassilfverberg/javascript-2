@@ -1,10 +1,9 @@
-import { collection, getDocs } from 'firebase/firestore'
 import { useState, useEffect } from 'react' 
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import ListGroup from 'react-bootstrap/ListGroup'
 import { Link } from 'react-router-dom'
-import { db } from '../firebase'
+import useGetTodos from '../hooks/useGetTodos'
 
 const TodosPage = () => {
 	const [todos, setTodos] = useState([])
@@ -13,16 +12,7 @@ const TodosPage = () => {
 	useEffect(() => {
 		const getSnapshot = async () => {
 			setLoading(true)
-			// get reference to collection 'todos' 
-			const ref = collection(db, 'todos')
-			const snapshot = await getDocs(ref)
-
-			const data = snapshot.docs.map((doc) => {
-				return {
-					id: doc.id,
-					...doc.data(), // title, completed
-				}
-			})
+			const data = await useGetTodos()
 
 			setTodos(data)
 			setLoading(false)
