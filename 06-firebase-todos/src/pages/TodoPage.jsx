@@ -8,7 +8,7 @@ import useGetTodo from '../hooks/useGetTodo'
 const TodoPage = () => {
 	const { id } = useParams()
 	
-	const [todo, setTodo] = useState()
+	const [todo, setTodo] = useState({})
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
@@ -25,6 +25,8 @@ const TodoPage = () => {
 
 	return (
 		<Container className="py-3">
+
+			{loading && (<p>Loading todo...</p>)}
 
 			<div className="d-flex justify-content-between align-items-start mb-3">
 				{todo && (<h1>{todo.title}</h1>)}
