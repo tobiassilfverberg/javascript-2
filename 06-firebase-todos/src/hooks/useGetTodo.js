@@ -1,12 +1,7 @@
-import { doc, getDoc } from 'firebase/firestore'
-import { db } from '../firebase'
+import useGetDocument from './useGetDocument'
 
 const useGetTodo = async (id) => {
-	// get reference to doc 'todos' 
-	const ref = doc(db, 'todos', id)
-	const snapshot = await getDoc(ref)
-
-	return snapshot.data()
+	return await useGetDocument('todos', id)
 }
 
 export default useGetTodo
