@@ -3,10 +3,19 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Container from 'react-bootstrap/Container'
 import { useParams } from 'react-router-dom'
 import useGetTodo from '../hooks/useGetTodo'
+import { doc, deleteDoc } from "firebase/firestore";
+import { db } from '../firebase'
+import { useNavigate } from 'react-router-dom'
 
 const TodoPage = () => {
 	const { id } = useParams()
 	const { data, loading, getSnapshot: getData } = useGetTodo(id)
+	const navigate = useNavigate()
+
+	const deleteTodo = async () => {
+		await deleteDoc(doc(db, 'todos', id))
+		navigate("/todos")
+	}
 	
 	return (
 		<Container className="py-3">
@@ -21,7 +30,7 @@ const TodoPage = () => {
 
 			<ButtonGroup className="todo-actions">
 				<Button variant="primary" onClick={() => {}}>Toggle</Button>
-				<Button variant="danger" onClick={() => {}}>Delete</Button>
+				<Button variant="danger" onClick={deleteTodo}>Delete</Button>
 			</ButtonGroup>
 
 		</Container>
