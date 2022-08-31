@@ -1,20 +1,19 @@
 import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Container from 'react-bootstrap/Container'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import useGetTodo from '../hooks/useGetTodo'
 import { doc, deleteDoc, setDoc } from "firebase/firestore";
 import { db } from '../firebase'
-import { useNavigate } from 'react-router-dom'
 
 const TodoPage = () => {
 	const { id } = useParams()
-	const { data, loading, getSnapshot: getData } = useGetTodo(id)
+	const { data, loading } = useGetTodo(id)
 	const navigate = useNavigate()
 
 	const deleteTodo = async () => {
 		await deleteDoc(doc(db, 'todos', id))
-		navigate("/todos")
+		navigate("/todos", { replace : true })
 	}
 
 	const toggleTodo = async () => {
