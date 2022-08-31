@@ -6,6 +6,7 @@ const TodoListItem = ({ todo }) => {
 		<ListGroup.Item
 			action
 			as={Link}
+			className={todo.completed ? 'completed' : ''}
 			to={`/todos/${todo.id}`}
 		>
 			{todo.title}
