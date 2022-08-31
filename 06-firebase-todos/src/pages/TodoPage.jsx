@@ -3,7 +3,7 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Container from 'react-bootstrap/Container'
 import { useParams, useNavigate } from 'react-router-dom'
 import useGetTodo from '../hooks/useGetTodo'
-import { doc, deleteDoc, setDoc } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from '../firebase'
 
 const TodoPage = () => {
@@ -17,8 +17,7 @@ const TodoPage = () => {
 	}
 
 	const toggleTodo = async () => {
-			await setDoc(doc(db, 'todos', id), {
-				title: data.title,
+			await updateDoc(doc(db, 'todos', id), {
 				completed: !data.completed
 			})
 	}
