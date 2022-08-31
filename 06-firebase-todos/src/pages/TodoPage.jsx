@@ -2,6 +2,7 @@ import Button from 'react-bootstrap/Button'
 import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Container from 'react-bootstrap/Container'
 import { useParams, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import useGetTodo from '../hooks/useGetTodo'
 import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import { db } from '../firebase'
@@ -13,6 +14,9 @@ const TodoPage = () => {
 
 	const deleteTodo = async () => {
 		await deleteDoc(doc(db, 'todos', id))
+
+		toast.success("Todo deleted!")
+
 		navigate("/todos", { replace : true })
 	}
 
