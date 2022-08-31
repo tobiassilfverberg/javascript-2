@@ -1,8 +1,8 @@
 import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
-import ListGroup from 'react-bootstrap/ListGroup'
-import { Link } from 'react-router-dom'
 import useGetTodos from '../hooks/useGetTodos'
+import AddTodo from '../components/AddTodo'
+import TodoList from '../components/TodoList'
 
 const TodosPage = () => {
 	const { data: todos, loading, getSnapshot: getData } = useGetTodos()
@@ -17,20 +17,11 @@ const TodosPage = () => {
 
 			{loading && (<p>Loading data... </p>)}
 
-			{!loading && 
-				<ListGroup>
-					{todos.map((todo, index) => (
-						<ListGroup.Item
-							action
-							as={Link}
-							to={`/todos/${todo.id}`}
-							key={index}
-						>
-							{todo.title}
-						</ListGroup.Item>
-					))}
-				</ListGroup>
-			}
+			{!loading && (<TodoList todos={todos}/>)}
+
+			<hr /> 
+
+			<AddTodo /> 
 
 		</Container>
 	)

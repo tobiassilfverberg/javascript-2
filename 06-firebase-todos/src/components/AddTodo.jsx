@@ -14,7 +14,7 @@ const AddTodo = () => {
 			title: data.title,
 			completed: false, 
 		})
-		navigate('/todos')
+		// navigate('/todos')
 	}
 	
 	return (
