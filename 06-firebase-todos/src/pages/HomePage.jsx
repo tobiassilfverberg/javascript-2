@@ -1,13 +1,15 @@
 import Container from 'react-bootstrap/Container'
-import { auth } from '../firebase'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const HomePage = () => {
+	const { currentUser } = useAuthContext()
+
 	return (
 		<Container className="py-3">
 			<h1>Welcome!</h1>
 
-			{auth.currentUser
-				? <p>You are logged in as {auth.currentUser.email}!</p>
+			{currentUser
+				? <p>You are logged in as {currentUser.email}!</p>
 				: <p>Anonymous haxx0r</p>
 			}
 		</Container>
