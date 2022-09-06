@@ -1,17 +1,30 @@
 import React, { useRef, useState } from 'react'
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const LoginPage = () => {
 	const emailRef = useRef()
 	const passwordRef = useRef()
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
+	const { login } = useAuthContext()
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
 		setError(null);
+
+		// try to log in the user with the specified credentials
+		try {
+			setLoading(true)
+			await login(emailRef.current.value, passwordRef.current.value)
+			navigate('/')
+
+		} catch (err) {
+			setError(err.message)
+			setLoading(false)
+		}
 	}
 
 	return (

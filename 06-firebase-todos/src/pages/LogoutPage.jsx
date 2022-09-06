@@ -1,11 +1,18 @@
 import React, { useEffect } from 'react'
 import { Container, Row, Col, Card } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const LogoutPage = () => {
 	const navigate = useNavigate()
+	const { logout } = useAuthContext()
 
-	useEffect(async () => {
+	useEffect(() => {
+		const logoutUser = async () => {
+			await logout()
+			navigate('/')
+		}
+		logoutUser()
 	}, [])
 
 	return (

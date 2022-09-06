@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react'
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const SignupPage = () => {
 	const emailRef = useRef()
@@ -8,6 +9,7 @@ const SignupPage = () => {
 	const passwordConfirmRef = useRef()
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
+	const { signup } = useAuthContext()
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
@@ -19,6 +21,16 @@ const SignupPage = () => {
 		}
 
 		setError(null);
+
+		// try to sign up the user with the specified credentials
+		try {
+			setLoading(true)
+			await signup(emailRef.current.value, passwordRef.current.value)
+			navigate('/')
+		} catch (err) {
+			setError(err.message)
+			setLoading(false)
+		}
 	}
 
 	return (
