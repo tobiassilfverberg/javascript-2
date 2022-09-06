@@ -6,6 +6,7 @@ import {
 	onAuthStateChanged,
 } from 'firebase/auth'
 import { auth } from '../firebase'
+import SyncLoader from 'react-spinners/SyncLoader'
 
 const AuthContext = createContext()
 
@@ -49,7 +50,9 @@ const AuthContextProvider = ({ children }) => {
 	return (
 		<AuthContext.Provider value={contextValues}>
 			{loading ? (
-				<p>Loading... </p>
+				<div id="initial-loader">
+					<SyncLoader color={'#888'} size={15} />
+				</div>
 			) : (
 				children
 			)}
