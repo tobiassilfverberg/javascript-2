@@ -1,11 +1,22 @@
-import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
-import useGetTodos from '../hooks/useGetTodos'
-import AddTodo from '../components/AddTodo'
+import CreateTodoForm from '../components/CreateTodoForm'
 import TodoList from '../components/TodoList'
+import useGetTodos from '../hooks/useGetTodos'
+import { collection, orderBy, query } from 'firebase/firestore'
+import { useFirestoreQueryData } from '@react-query-firebase/firestore'
+import { db } from '../firebase'
 
 const TodosPage = () => {
-	const { data: todos, loading } = useGetTodos()
+	// const { data: todos, loading } = useGetTodos()
+
+	const queryRef = query(
+		collection(db, 'todos'),
+		orderBy('title')
+	)
+	const { data: todos, isLoading } = useFirestoreQueryData(['todos'], queryRef, {
+		idField: 'id',
+		subscribe: true,
+	})
 
 	return (
 		<Container className="py-3">
@@ -14,13 +25,14 @@ const TodosPage = () => {
 				<h1>Todos</h1>
 			</div>
 
-			{loading && (<p>Loading data... </p>)}
+			{isLoading && (<p>Loading data...</p>)}
 
-			{!loading && (<TodoList todos={todos}/>)}
+			{!isLoading && <TodoList todos={todos} />}
 
-			<hr /> 
+			<hr className="my-4" />
 
-			<AddTodo /> 
+			<h2>Create New Todo</h2>
+			<CreateTodoForm />
 
 		</Container>
 	)

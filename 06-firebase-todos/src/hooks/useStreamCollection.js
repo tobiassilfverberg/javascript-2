@@ -1,17 +1,22 @@
 import { useEffect, useState } from 'react'
-import { collection, onSnapshot } from 'firebase/firestore'
+import {
+	collection,
+	onSnapshot,
+	query
+} from 'firebase/firestore'
 import { db } from '../firebase'
 
-const useStreamCollection = (col) => {
+const useStreamCollection = (col, ...queryConstraints) => {
 	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
 		// get reference to collection
-		const ref = collection(db, col)
+		const colRef = collection(db, col)
+		const queryRef = query(colRef, ...queryConstraints)
 
 		// subscribe to changes in collection
-		const unsubscribe = onSnapshot(ref, (snapshot) => {
+		const unsubscribe = onSnapshot(queryRef, (snapshot) => {
 			// got me a new snapshot 🤳🏻
 			const docs = snapshot.docs.map(doc => {
 				return {

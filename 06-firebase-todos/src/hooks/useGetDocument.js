@@ -1,29 +1,35 @@
+import { useEffect, useState } from 'react'
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from '../firebase'
-import { useState, useEffect } from 'react'
 
-const useGetDocument = (collection, id) => {
-	const [data, setData] = useState({})
+const useGetDocument = (col, id) => {
+	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(true)
 
-	const getSnapshot = async () => {
+	const getData = async () => {
 		setLoading(true)
-
-		const ref = doc(db, collection, id)
+		// get reference to document in collection col
+		const ref = doc(db, col, id)
 		const snapshot = await getDoc(ref)
+
+		if (!snapshot.exists()) {
+			setData(false)
+			setLoading(false)
+			return
+		}
 
 		setData(snapshot.data())
 		setLoading(false)
 	}
 
 	useEffect(() => {
-		getSnapshot()
+		getData()
 	}, [])
 
 	return {
 		data,
 		loading,
-		getSnapshot,
+		getData,
 	}
 }
 

@@ -3,14 +3,19 @@ import { doc, onSnapshot } from 'firebase/firestore'
 import { db } from '../firebase'
 
 const useStreamDocument = (col, id) => {
-	const [data, setData] = useState()
+	const [data, setData] = useState([])
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
+		// get reference to document
 		const ref = doc(db, col, id)
-		const unsubscribe = onSnapshot(ref, (snapshot) => {
-			setData(snapshot.data())
 
+		// subscribe to changes on the document
+		const unsubscribe = onSnapshot(ref, (snapshot) => {
+			setData({
+				id: snapshot.id,
+				...snapshot.data(),
+			})
 			setLoading(false)
 		})
 
@@ -18,8 +23,8 @@ const useStreamDocument = (col, id) => {
 	}, [])
 
 	return {
-		data, 
-		loading
+		data,
+		loading,
 	}
 }
 
