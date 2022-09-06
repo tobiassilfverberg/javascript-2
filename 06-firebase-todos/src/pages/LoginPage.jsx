@@ -15,7 +15,7 @@ const LoginPage = () => {
 	}
 
 	return (
-		<Container className="py-3">
+		<Container className="py-3 center-y">
 			<Row>
 				<Col md={{ span: 6, offset: 3 }}>
 					<Card>
