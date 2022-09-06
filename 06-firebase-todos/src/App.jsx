@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound'
 import SignupPage from './pages/SignupPage'
 import TodoPage from './pages/TodoPage'
 import TodosPage from './pages/TodosPage'
+import UpdateProfilePage from './pages/UpdateProfilePage'
 import './assets/scss/App.scss'
 import RequireAuth from './components/RequireAuth'
 
@@ -40,6 +41,12 @@ function App() {
 				<Route path="/todos/:id" element={
 					<RequireAuth>
 						<TodoPage />
+					</RequireAuth>
+				} />
+
+				<Route path="/update-profile" element={
+					<RequireAuth>
+						<UpdateProfilePage />
 					</RequireAuth>
 				} />
 			</Routes>

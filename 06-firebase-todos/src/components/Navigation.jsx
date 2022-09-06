@@ -3,6 +3,7 @@ import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link, NavLink } from 'react-router-dom'
 import { useAuthContext } from '../contexts/AuthContext'
+import { NavDropdown } from 'react-bootstrap'
 
 const Navigation = () => {
 	const { currentUser } = useAuthContext()
@@ -24,21 +25,26 @@ const Navigation = () => {
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="ms-auto">
-
 						{
 							currentUser ? (
 								<>
+									{/* User is logged in */}
 									<Nav.Link as={NavLink} end to="/todos">Todos</Nav.Link>
-									<Nav.Link as={NavLink} to="/logout">Log Out</Nav.Link>
+
+									<NavDropdown title={currentUser.email}>
+										<NavLink to="/update-profile" className="dropdown-item">Update Profile</NavLink>
+										<NavDropdown.Divider />
+										<NavLink to="/logout" className="dropdown-item">Log Out</NavLink>
+									</NavDropdown>
 								</>
 							) : (
 								<>
-									<Nav.Link as={NavLink} to="/signup">Sign Up</Nav.Link>
-									<Nav.Link as={NavLink} to="/login">Log In</Nav.Link>
+									{/* No user is logged in */}
+									<Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+									<Nav.Link as={NavLink} to="/signup">Signup</Nav.Link>
 								</>
 							)
 						}
-
 					</Nav>
 				</Navbar.Collapse>
 			</Container>

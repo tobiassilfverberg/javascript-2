@@ -30,6 +30,18 @@ const AuthContextProvider = ({ children }) => {
 		return signOut(auth)
 	}
 
+	const resetPassword = (email) => {
+	}
+
+	const setEmail = (email) => {
+	}
+
+	const setPassword = (newPassword) => {
+	}
+
+	const setDisplayName = (name) => {
+	}
+
 	// add auth-state observer here (somehow... 😈)
 	useEffect(() => {
 		// listen for auth-state changes
@@ -45,6 +57,10 @@ const AuthContextProvider = ({ children }) => {
 		login,
 		logout,
 		signup,
+		resetPassword,
+		setDisplayName,
+		setEmail,
+		setPassword,
 	}
 
 	return (
