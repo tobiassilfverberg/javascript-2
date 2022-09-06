@@ -10,6 +10,7 @@ import SignupPage from './pages/SignupPage'
 import TodoPage from './pages/TodoPage'
 import TodosPage from './pages/TodosPage'
 import './assets/scss/App.scss'
+import RequireAuth from './components/RequireAuth'
 
 function App() {
 	return (
@@ -17,15 +18,30 @@ function App() {
 			<Navigation />
 
 			<Routes>
-				<Route path="/" element={<HomePage />} />
-
+				{/* Guest routes */}
+				<Route path="*" element={<NotFound />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/logout" element={<LogoutPage />} />
 				<Route path="/signup" element={<SignupPage />} />
 
-				<Route path="/todos" element={<TodosPage />} />
-				<Route path="/todos/:id" element={<TodoPage />} />
-				<Route path="*" element={<NotFound />} />
+				{/* Protected routes */}
+				<Route path="/" element={
+					<RequireAuth>
+						<HomePage />
+					</RequireAuth>
+				} />
+
+				<Route path="/todos" element={
+					<RequireAuth>
+						<TodosPage />
+					</RequireAuth>
+				} />
+
+				<Route path="/todos/:id" element={
+					<RequireAuth>
+						<TodoPage />
+					</RequireAuth>
+				} />
 			</Routes>
 
 			<ToastContainer autoClose={3000} />
