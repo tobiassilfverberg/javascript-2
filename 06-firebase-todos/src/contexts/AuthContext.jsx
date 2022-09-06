@@ -15,6 +15,7 @@ const useAuthContext = () => {
 
 const AuthContextProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null)
+	const [loading, setLoading] = useState(true)
 
 	const signup = (email, password) => {
 		return createUserWithEmailAndPassword(auth, email, password)
@@ -33,6 +34,7 @@ const AuthContextProvider = ({ children }) => {
 		// listen for auth-state changes
 		onAuthStateChanged(auth, (user) =>{
 			setCurrentUser(user)
+			setLoading(false)
 		})
 	}, [])
 
@@ -46,7 +48,11 @@ const AuthContextProvider = ({ children }) => {
 
 	return (
 		<AuthContext.Provider value={contextValues}>
-			{children}
+			{loading ? (
+				<p>Loading... </p>
+			) : (
+				children
+			)}
 		</AuthContext.Provider>
 	)
 }
