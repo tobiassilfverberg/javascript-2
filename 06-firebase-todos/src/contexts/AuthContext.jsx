@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import {
 	createUserWithEmailAndPassword,
+	sendPasswordResetEmail,
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
@@ -31,6 +32,7 @@ const AuthContextProvider = ({ children }) => {
 	}
 
 	const resetPassword = (email) => {
+		return sendPasswordResetEmail(auth, email)
 	}
 
 	const setEmail = (email) => {

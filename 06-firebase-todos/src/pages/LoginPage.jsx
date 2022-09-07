@@ -8,7 +8,7 @@ const LoginPage = () => {
 	const passwordRef = useRef()
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
-	const { login } = useAuthContext()
+	const { login, resetPassword } = useAuthContext()
 	const navigate = useNavigate()
 
 	const handleSubmit = async (e) => {
@@ -26,6 +26,14 @@ const LoginPage = () => {
 			setLoading(false)
 		}
 	}
+
+	const forgotPassword = async () => {
+		try {
+			await resetPassword(emailRef.current.value)
+		} catch (err) {
+			setError(err.message)
+		}
+	} 
 
 	return (
 		<Container className="py-3 center-y">
@@ -53,7 +61,8 @@ const LoginPage = () => {
 							</Form>
 
 							<div className="text-center mt-3">
-								<Link to="/forgot-password">Forgot Password?</Link>
+								{/* <Link to="/forgot-password">Forgot Password?</Link> */}
+								<Button onClick={forgotPassword}>Forgot password?</Button>
 							</div>
 						</Card.Body>
 					</Card>
