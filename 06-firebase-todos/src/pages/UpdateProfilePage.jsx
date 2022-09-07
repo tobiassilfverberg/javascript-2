@@ -7,10 +7,16 @@ const UpdateProfilePage = () => {
 	const emailRef = useRef()
 	const passwordRef = useRef()
 	const passwordConfirmRef = useRef()
+	const photoUrlRef = useRef()
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState(null)
-	const { currentUser, setEmail, setPassword, setDisplayName } = useAuthContext()
+	const { 
+		currentUser, 
+		setEmail, 
+		setPassword, 
+		setDisplayNameAndPhotoUrl,
+	} = useAuthContext()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
@@ -29,8 +35,11 @@ const UpdateProfilePage = () => {
 			setLoading(true)
 
 			// update displayName *ONLY* if it has changed
-			if (displayNameRef.current.value !== currentUser.displayName) {
-				await setDisplayName(displayNameRef.current.value)
+			if (
+				displayNameRef.current.value !== currentUser.displayName 
+				|| photoUrlRef.current.value !== currentUser.photoURL
+			) {
+				await setDisplayNameAndPhotoUrl(displayNameRef.current.value, photoUrlRef.current.value)
 			}
 
 			// update email *ONLY* if it has changed
@@ -69,6 +78,11 @@ const UpdateProfilePage = () => {
 								<Form.Group id="displayName" className="mb-3">
 									<Form.Label>Name</Form.Label>
 									<Form.Control type="text" ref={displayNameRef} defaultValue={currentUser.displayName} />
+								</Form.Group>
+
+								<Form.Group id="photoUrl" className="mb-3">
+									<Form.Label>Photo URL</Form.Label>
+									<Form.Control type="url" ref={photoUrlRef} defaultValue={currentUser.photoUrl} />
 								</Form.Group>
 
 								<Form.Group id="email" className="mb-3">

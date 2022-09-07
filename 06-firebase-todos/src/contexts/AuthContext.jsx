@@ -7,7 +7,7 @@ import {
 	onAuthStateChanged,
 	updateEmail, 
 	updatePassword,
-	updateProfile,
+	updateProfile as FirebaseUpdateProfile,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 import SyncLoader from 'react-spinners/SyncLoader'
@@ -46,9 +46,10 @@ const AuthContextProvider = ({ children }) => {
 		return updatePassword(currentUser, newPassword)
 	}
 
-	const setDisplayName = (displayName) => {
-		return updateProfile(currentUser, {
-			displayName
+	const setDisplayNameAndPhotoUrl = (displayName, photoURL) => {
+		return FirebaseUpdateProfile(currentUser, {
+			displayName,
+			photoURL,
 		})
 	}
 
@@ -68,7 +69,7 @@ const AuthContextProvider = ({ children }) => {
 		logout,
 		signup,
 		resetPassword,
-		setDisplayName,
+		setDisplayNameAndPhotoUrl,
 		setEmail,
 		setPassword,
 	}
