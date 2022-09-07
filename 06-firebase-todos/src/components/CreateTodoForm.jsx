@@ -4,9 +4,11 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import { collection, addDoc, serverTimestamp, Timestamp } from 'firebase/firestore'
 import { db } from '../firebase'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const CreateTodoForm = () => {
 	const { register, handleSubmit, formState: { errors }, reset } = useForm()
+	const { currentUser } = useAuthContext()
 
 	const onCreateTodo = async (data) => {
 		// make firestore doc, plz
@@ -15,6 +17,7 @@ const CreateTodoForm = () => {
 			created: serverTimestamp(),
 			title: data.title,
 			due_date: Timestamp.fromDate( new Date(data.due_date) ),
+			uid: currentUser.uid,
 		})
 
 		toast.success("💪🏻 Todo created!")
