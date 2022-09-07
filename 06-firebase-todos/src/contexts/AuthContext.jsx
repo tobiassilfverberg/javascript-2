@@ -5,6 +5,9 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
+	updateEmail, 
+	updatePassword,
+	updateProfile,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 import SyncLoader from 'react-spinners/SyncLoader'
@@ -36,12 +39,17 @@ const AuthContextProvider = ({ children }) => {
 	}
 
 	const setEmail = (email) => {
+		return updateEmail(currentUser, email)
 	}
 
 	const setPassword = (newPassword) => {
+		return updatePassword(currentUser, newPassword)
 	}
 
-	const setDisplayName = (name) => {
+	const setDisplayName = (displayName) => {
+		return updateProfile(currentUser, {
+			displayName
+		})
 	}
 
 	// add auth-state observer here (somehow... 😈)

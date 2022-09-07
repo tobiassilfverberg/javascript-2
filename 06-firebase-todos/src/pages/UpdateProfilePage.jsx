@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap'
+import { useAuthContext } from '../contexts/AuthContext'
 
 const UpdateProfilePage = () => {
 	const displayNameRef = useRef()
@@ -9,6 +10,7 @@ const UpdateProfilePage = () => {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const [message, setMessage] = useState(null)
+	const { currentUser, setEmail, setPassword, setDisplayName } = useAuthContext()
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
@@ -27,10 +29,19 @@ const UpdateProfilePage = () => {
 			setLoading(true)
 
 			// update displayName *ONLY* if it has changed
+			if (displayNameRef.current.value !== currentUser.displayName) {
+				await setDisplayName(displayNameRef.current.value)
+			}
 
 			// update email *ONLY* if it has changed
+			if (emailRef.current.value !== currentUser.email) {
+				await setEmail(emailRef.current.value)
+			}
 
 			// update password *ONLY* if the user has provided a new password to set
+			if (passwordRef.current.value) {
+				await setPassword(passwordRef.current.value)
+			}
 
 			setMessage("Profile successfully updated")
 			setLoading(false)
@@ -57,12 +68,12 @@ const UpdateProfilePage = () => {
 								*/}
 								<Form.Group id="displayName" className="mb-3">
 									<Form.Label>Name</Form.Label>
-									<Form.Control type="text" ref={displayNameRef} />
+									<Form.Control type="text" ref={displayNameRef} defaultValue={currentUser.displayName} />
 								</Form.Group>
 
 								<Form.Group id="email" className="mb-3">
 									<Form.Label>Email</Form.Label>
-									<Form.Control type="email" ref={emailRef} required />
+									<Form.Control type="email" ref={emailRef} required defaultValue={currentUser.email}/>
 								</Form.Group>
 
 								<Form.Group id="password" className="mb-3">
