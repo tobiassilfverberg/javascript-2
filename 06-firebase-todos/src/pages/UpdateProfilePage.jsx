@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Container, Row, Col, Form, Button, Card, Alert } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button, Card, Alert, Image } from 'react-bootstrap'
 import { useAuthContext } from '../contexts/AuthContext'
 
 const UpdateProfilePage = () => {
@@ -75,6 +75,13 @@ const UpdateProfilePage = () => {
 								{/*
 									Fill the displayName and email form fields with their current value!
 								*/}
+								<div className="d-flex justify-content-center">
+								<Image 
+									src={currentUser.photoURL || 'https://via.placeholder.com/150'} 
+									fluid 
+									roundedCircle 
+										/>
+								</div>
 								<Form.Group id="displayName" className="mb-3">
 									<Form.Label>Name</Form.Label>
 									<Form.Control type="text" ref={displayNameRef} defaultValue={currentUser.displayName} />

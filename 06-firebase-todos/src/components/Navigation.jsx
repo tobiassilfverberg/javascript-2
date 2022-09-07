@@ -1,4 +1,5 @@
 import Container from 'react-bootstrap/Container'
+import Image from 'react-bootstrap/Image'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import { Link, NavLink } from 'react-router-dom'
@@ -24,14 +25,23 @@ const Navigation = () => {
 
 				<Navbar.Toggle aria-controls="basic-navbar-nav" />
 				<Navbar.Collapse id="basic-navbar-nav">
-					<Nav className="ms-auto">
+					<Nav className="ms-auto align-items-center">
 						{
 							currentUser ? (
 								<>
 									{/* User is logged in */}
 									<Nav.Link as={NavLink} end to="/todos">Todos</Nav.Link>
 
-									<NavDropdown title={currentUser.displayName || currentUser.email}>
+									<NavDropdown title={
+										currentUser.photoURL 
+										? <Image 
+											src={currentUser.photoURL} 
+											height={30}
+											width={30}
+											fluid 
+											roundedCircle 
+										/>
+										: currentUser.displayName || currentUser.email}>
 										<NavLink to="/update-profile" className="dropdown-item">Update Profile</NavLink>
 										<NavDropdown.Divider />
 										<NavLink to="/logout" className="dropdown-item">Log Out</NavLink>
