@@ -14,7 +14,7 @@ const TodosPage = () => {
 		where('uid', '==', currentUser.uid),
 		orderBy('title'),
 	)
-	const { data: todos, isLoading } = useFirestoreQueryData(['todos'], queryRef, {
+	const { data: todos, isLoading } = useFirestoreQueryData(['todos', {uid: currentUser.uid} ], queryRef, {
 		idField: 'id',
 		subscribe: true,
 	})
