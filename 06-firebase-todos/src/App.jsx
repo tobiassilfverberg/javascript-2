@@ -2,6 +2,7 @@ import { Routes, Route } from 'react-router-dom'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import { ToastContainer } from 'react-toastify'
 import Navigation from './components/Navigation'
+import ForgotPassWordPage from './pages/ForgotPasswordPage'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import LogoutPage from './pages/LogoutPage'
@@ -21,6 +22,7 @@ function App() {
 			<Routes>
 				{/* Guest routes */}
 				<Route path="*" element={<NotFound />} />
+				<Route path="/forgot-password" element={<ForgotPassWordPage />} />
 				<Route path="/login" element={<LoginPage />} />
 				<Route path="/logout" element={<LogoutPage />} />
 				<Route path="/signup" element={<SignupPage />} />
