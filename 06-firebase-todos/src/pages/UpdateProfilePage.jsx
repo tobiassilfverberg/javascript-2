@@ -1,8 +1,6 @@
 import { useRef, useState } from 'react'
 import { Container, Row, Col, Form, Button, Card, Alert, Image } from 'react-bootstrap'
-import { ref, getDownloadURL, uploadBytes } from 'firebase/storage'
 import { useAuthContext } from '../contexts/AuthContext'
-import { storage } from '../firebase'
 
 const UpdateProfilePage = () => {
 	const displayNameRef = useRef()
@@ -17,7 +15,7 @@ const UpdateProfilePage = () => {
 	const {
 		currentUser,
 		reloadUser,
-		setDisplayNameAndPhotoUrl,
+		setDisplayNameAndPhoto,
 		setEmail,
 		setPassword
 	} = useAuthContext()
@@ -53,28 +51,7 @@ const UpdateProfilePage = () => {
 				displayNameRef.current.value !== currentUser.displayName
 				|| photo
 			) {
-				let photoUrl = currentUser.photoURL
-
-				if (photo) {
-					// create a reference to upload the file to
-					const fileRef = ref(storage, `photos/${currentUser.email}/${photo.name}`)
-
-					try {
-						// upload photo to fileRef
-						const uploadResult = await uploadBytes(fileRef, photo)
-
-						// get download url to uploaded file
-						photoUrl = await getDownloadURL(uploadResult.ref)
-
-						console.log("Photo uploaded successfully, download url is:", photoUrl)
-
-					} catch (e) {
-						console.log("Upload failed", e)
-						setError("Photo failed to upload!")
-					}
-				}
-
-				await setDisplayNameAndPhotoUrl(displayNameRef.current.value, photoUrl)
+				await setDisplayNameAndPhoto(displayNameRef.current.value, photo)
 			}
 
 			// update email *ONLY* if it has changed

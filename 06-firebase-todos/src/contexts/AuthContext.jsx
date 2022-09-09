@@ -9,7 +9,8 @@ import {
 	updatePassword,
 	updateProfile,
 } from 'firebase/auth'
-import { auth } from '../firebase'
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage'
+import { auth, storage } from '../firebase'
 import SyncLoader from 'react-spinners/SyncLoader'
 
 const AuthContext = createContext()
@@ -58,7 +59,28 @@ const AuthContextProvider = ({ children }) => {
 		return updatePassword(currentUser, newPassword)
 	}
 
-	const setDisplayNameAndPhotoUrl = (displayName, photoURL) => {
+	const setDisplayNameAndPhoto = async (displayName, photo) => {
+		let photoURL = currentUser.photoURL
+
+		if (photo) {
+			// create a reference to upload the file to
+			const fileRef = ref(storage, `photos/${currentUser.email}/${photo.name}`)
+
+			try {
+				// upload photo to fileRef
+				const uploadResult = await uploadBytes(fileRef, photo)
+
+				// get download url to uploaded file
+				photoURL = await getDownloadURL(uploadResult.ref)
+
+				console.log("Photo uploaded successfully, download url is:", photoURL)
+
+			} catch (e) {
+				console.log("Upload failed", e)
+				setError("Photo failed to upload!")
+			}
+		}
+
 		return updateProfile(currentUser, {
 			displayName,
 			photoURL,
@@ -87,7 +109,7 @@ const AuthContextProvider = ({ children }) => {
 		signup,
 		reloadUser,
 		resetPassword,
-		setDisplayNameAndPhotoUrl,
+		setDisplayNameAndPhoto,
 		setEmail,
 		setPassword,
 		userName,
