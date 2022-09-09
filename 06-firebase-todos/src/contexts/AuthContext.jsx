@@ -5,9 +5,9 @@ import {
 	signInWithEmailAndPassword,
 	signOut,
 	onAuthStateChanged,
-	updateEmail, 
+	updateEmail,
 	updatePassword,
-	updateProfile as FirebaseUpdateProfile,
+	updateProfile,
 } from 'firebase/auth'
 import { auth } from '../firebase'
 import SyncLoader from 'react-spinners/SyncLoader'
@@ -20,6 +20,9 @@ const useAuthContext = () => {
 
 const AuthContextProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null)
+	const [userName, setUserName] = useState(null)
+	const [userEmail, setUserEmail] = useState(null)
+	const [userPhotoUrl, setUserPhotoUrl] = useState(null)
 	const [loading, setLoading] = useState(true)
 
 	const signup = (email, password) => {
@@ -32,6 +35,15 @@ const AuthContextProvider = ({ children }) => {
 
 	const logout = () => {
 		return signOut(auth)
+	}
+
+	const reloadUser = async () => {
+		await currentUser.reload()
+		setCurrentUser(auth.currentUser)
+		setUserName(auth.currentUser.displayName)
+		setUserEmail(auth.currentUser.email)
+		setUserPhotoUrl(auth.currentUser.photoURL)
+		return true
 	}
 
 	const resetPassword = (email) => {
@@ -47,7 +59,7 @@ const AuthContextProvider = ({ children }) => {
 	}
 
 	const setDisplayNameAndPhotoUrl = (displayName, photoURL) => {
-		return FirebaseUpdateProfile(currentUser, {
+		return updateProfile(currentUser, {
 			displayName,
 			photoURL,
 		})
@@ -56,10 +68,15 @@ const AuthContextProvider = ({ children }) => {
 	// add auth-state observer here (somehow... 😈)
 	useEffect(() => {
 		// listen for auth-state changes
-		onAuthStateChanged(auth, (user) =>{
+		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			setCurrentUser(user)
+			setUserName(user?.displayName)
+			setUserEmail(user?.email)
+			setUserPhotoUrl(user?.photoURL)
 			setLoading(false)
 		})
+
+		return unsubscribe
 	}, [])
 
 	const contextValues = {
@@ -68,17 +85,21 @@ const AuthContextProvider = ({ children }) => {
 		login,
 		logout,
 		signup,
+		reloadUser,
 		resetPassword,
 		setDisplayNameAndPhotoUrl,
 		setEmail,
 		setPassword,
+		userName,
+		userEmail,
+		userPhotoUrl,
 	}
 
 	return (
 		<AuthContext.Provider value={contextValues}>
 			{loading ? (
 				<div id="initial-loader">
-					<SyncLoader color={'#888'} size={15} />
+					<SyncLoader color={'#888'} size={15} speedMultiplier={1.1} />
 				</div>
 			) : (
 				children

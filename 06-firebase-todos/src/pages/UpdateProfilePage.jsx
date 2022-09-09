@@ -1,22 +1,36 @@
 import { useRef, useState } from 'react'
 import { Container, Row, Col, Form, Button, Card, Alert, Image } from 'react-bootstrap'
+import { ref, getDownloadURL, uploadBytes } from 'firebase/storage'
 import { useAuthContext } from '../contexts/AuthContext'
+import { storage } from '../firebase'
 
 const UpdateProfilePage = () => {
 	const displayNameRef = useRef()
 	const emailRef = useRef()
+	const photoRef = useRef()
 	const passwordRef = useRef()
 	const passwordConfirmRef = useRef()
-	const photoUrlRef = useRef()
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
+	const [photo, setPhoto] = useState(null)
 	const [message, setMessage] = useState(null)
-	const { 
-		currentUser, 
-		setEmail, 
-		setPassword, 
+	const {
+		currentUser,
+		reloadUser,
 		setDisplayNameAndPhotoUrl,
+		setEmail,
+		setPassword
 	} = useAuthContext()
+
+	const handleFileChange = (e) => {
+		if (!e.target.files.length) {
+			setPhoto(null)
+			return
+		}
+
+		setPhoto(e.target.files[0])
+		console.log("File changed!", e.target.files[0])
+	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
@@ -36,10 +50,31 @@ const UpdateProfilePage = () => {
 
 			// update displayName *ONLY* if it has changed
 			if (
-				displayNameRef.current.value !== currentUser.displayName 
-				|| photoUrlRef.current.value !== currentUser.photoURL
+				displayNameRef.current.value !== currentUser.displayName
+				|| photo
 			) {
-				await setDisplayNameAndPhotoUrl(displayNameRef.current.value, photoUrlRef.current.value)
+				let photoUrl = currentUser.photoURL
+
+				if (photo) {
+					// create a reference to upload the file to
+					const fileRef = ref(storage, `photos/${currentUser.email}/${photo.name}`)
+
+					try {
+						// upload photo to fileRef
+						const uploadResult = await uploadBytes(fileRef, photo)
+
+						// get download url to uploaded file
+						photoUrl = await getDownloadURL(uploadResult.ref)
+
+						console.log("Photo uploaded successfully, download url is:", photoUrl)
+
+					} catch (e) {
+						console.log("Upload failed", e)
+						setError("Photo failed to upload!")
+					}
+				}
+
+				await setDisplayNameAndPhotoUrl(displayNameRef.current.value, photoUrl)
 			}
 
 			// update email *ONLY* if it has changed
@@ -52,11 +87,15 @@ const UpdateProfilePage = () => {
 				await setPassword(passwordRef.current.value)
 			}
 
+			// reload user
+			await reloadUser()
+
 			setMessage("Profile successfully updated")
 			setLoading(false)
 
 		} catch (e) {
-			setError("Error updating profile. Try logging out and in again.")
+			console.log("Error updating profile", e)
+			setError(e.message)
 			setLoading(false)
 		}
 	}
@@ -75,26 +114,34 @@ const UpdateProfilePage = () => {
 								{/*
 									Fill the displayName and email form fields with their current value!
 								*/}
-								<div className="d-flex justify-content-center">
-								<Image 
-									src={currentUser.photoURL || 'https://via.placeholder.com/150'} 
-									fluid 
-									roundedCircle 
-										/>
+								<div className="d-flex justify-content-center my-3">
+									<Image
+										src={currentUser.photoURL || 'https://via.placeholder.com/225'}
+										fluid
+										roundedCircle
+									/>
 								</div>
+
 								<Form.Group id="displayName" className="mb-3">
 									<Form.Label>Name</Form.Label>
 									<Form.Control type="text" ref={displayNameRef} defaultValue={currentUser.displayName} />
 								</Form.Group>
 
-								<Form.Group id="photoUrl" className="mb-3">
-									<Form.Label>Photo URL</Form.Label>
-									<Form.Control type="url" ref={photoUrlRef} defaultValue={currentUser.photoUrl} />
+								<Form.Group id="photo" className="mb-3">
+									<Form.Label>Photo</Form.Label>
+									<Form.Control type="file" onChange={handleFileChange} />
+									<Form.Text>
+										{
+											photo
+												? `${photo.name} (${Math.round(photo.size/1024)} kB)`
+												: 'No photo selected'
+										}
+									</Form.Text>
 								</Form.Group>
 
 								<Form.Group id="email" className="mb-3">
 									<Form.Label>Email</Form.Label>
-									<Form.Control type="email" ref={emailRef} required defaultValue={currentUser.email}/>
+									<Form.Control type="email" ref={emailRef} defaultValue={currentUser.email} required />
 								</Form.Group>
 
 								<Form.Group id="password" className="mb-3">
