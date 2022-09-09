@@ -39,7 +39,7 @@ const AuthContextProvider = ({ children }) => {
 	}
 
 	const reloadUser = async () => {
-		await currentUser.reload()
+		await auth.currentUser.reload()
 		setCurrentUser(auth.currentUser)
 		setUserName(auth.currentUser.displayName)
 		setUserEmail(auth.currentUser.email)
@@ -60,11 +60,11 @@ const AuthContextProvider = ({ children }) => {
 	}
 
 	const setDisplayNameAndPhoto = async (displayName, photo) => {
-		let photoURL = currentUser.photoURL
+		let photoURL = auth.currentUser.photoURL
 
 		if (photo) {
 			// create a reference to upload the file to
-			const fileRef = ref(storage, `photos/${currentUser.email}/${photo.name}`)
+			const fileRef = ref(storage, `photos/${auth.currentUser.email}/${photo.name}`)
 
 			try {
 				// upload photo to fileRef
@@ -81,7 +81,7 @@ const AuthContextProvider = ({ children }) => {
 			}
 		}
 
-		return updateProfile(currentUser, {
+		return updateProfile(auth.currentUser, {
 			displayName,
 			photoURL,
 		})
