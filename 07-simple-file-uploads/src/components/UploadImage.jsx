@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import ProgressBar from 'react-bootstrap/ProgressBar'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
 import { db, storage } from '../firebase'
 
@@ -60,6 +60,7 @@ const UploadImage = () => {
 				size: image.size,
 				type: image.type,
 				url,
+				created: serverTimestamp(),
 			})
 
 			setMessage({
