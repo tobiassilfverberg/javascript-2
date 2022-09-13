@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button'
 import Container from 'react-bootstrap/Container'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCloudUploadAlt } from '@fortawesome/free-solid-svg-icons'
+import UploadImage from '../components/UploadImage'
 
 const HomePage = () => {
 	const [showUpload, setShowUpload] = useState(false)
@@ -17,7 +18,7 @@ const HomePage = () => {
 			</div>
 
 			<div className={`${!showUpload ? 'd-none' : ''}`}>
-				{/* Upload Image Dropzone */}
+				<UploadImage />
 				<hr className="my-3" />
 			</div>
 
