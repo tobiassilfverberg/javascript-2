@@ -3,8 +3,9 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import ProgressBar from 'react-bootstrap/ProgressBar'
+import { addDoc, collection } from 'firebase/firestore'
 import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
-import { storage } from '../firebase'
+import { db, storage } from '../firebase'
 
 const UploadImage = () => {
 	const [image, setImage] = useState(null)
@@ -45,7 +46,22 @@ const UploadImage = () => {
 				msg: `Image failed to upload due to the following error: ${e.message}`,
 			})
 
-		}, () => {
+		}, async () => {
+			// get download url to uploaded image
+			const url = await getDownloadURL(fileRef)
+
+			// get reference to collection 'images'
+			const collectionRef = collection(db, 'images')
+
+			// create document in db for the uploaded image
+			await addDoc(collectionRef, {
+				name: image.name,
+				path: fileRef.fullPath,
+				size: image.size,
+				type: image.type,
+				url,
+			})
+
 			setMessage({
 				type: "success",
 				msg: "Image successfully uploaded 🤩",
