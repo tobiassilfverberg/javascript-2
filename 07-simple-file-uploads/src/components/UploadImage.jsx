@@ -3,14 +3,12 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import ProgressBar from 'react-bootstrap/ProgressBar'
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
-import { ref, getDownloadURL, uploadBytesResumable } from 'firebase/storage'
-import { db, storage } from '../firebase'
+import useUploadImage from '../hooks/useUploadImage'
 
 const UploadImage = () => {
 	const [image, setImage] = useState(null)
 	const [message, setMessage] = useState()
-	const [uploadProgress, setUploadProgress] = useState(null)
+	const uploadImage = useUploadImage()
 
 	const handleFileChange = (e) => {
 		if (e.target.files[0]) {
@@ -21,53 +19,8 @@ const UploadImage = () => {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault()
-
-		setUploadProgress(null)
-
-		if (!image) {
-			return
-		}
-
-		// create a reference to upload the file to
-		const fileRef = ref(storage, `images/${image.name}`)
-
-		// upload image to fileRef
-		const uploadTask = uploadBytesResumable(fileRef, image)
-
-		// attach upload observer
-		uploadTask.on('state_changed', (uploadTaskSnapshot) => {
-			setUploadProgress(Math.round((uploadTaskSnapshot.bytesTransferred / uploadTaskSnapshot.totalBytes) * 100))
-
-		}, (e) => {
-			console.log("NOT so great success, fail!", e)
-
-			setMessage({
-				type: "warning",
-				msg: `Image failed to upload due to the following error: ${e.message}`,
-			})
-
-		}, async () => {
-			// get download url to uploaded image
-			const url = await getDownloadURL(fileRef)
-
-			// get reference to collection 'images'
-			const collectionRef = collection(db, 'images')
-
-			// create document in db for the uploaded image
-			await addDoc(collectionRef, {
-				name: image.name,
-				path: fileRef.fullPath,
-				size: image.size,
-				type: image.type,
-				url,
-				created: serverTimestamp(),
-			})
-
-			setMessage({
-				type: "success",
-				msg: "Image successfully uploaded 🤩",
-			})
-		})
+		
+		uploadImage.mutate(image)
 	}
 
 	const handleReset = () => {
@@ -94,14 +47,19 @@ const UploadImage = () => {
 					</Form.Text>
 				</Form.Group>
 
-				<Button type="submit" variant="primary">Upload</Button>
+				<Button 
+					type="submit" 
+					variant="primary"
+					disabled={uploadImage.isMutating}
+					>Upload
+				</Button>
 				<Button type="reset" variant="danger">Reset</Button>
 			</Form>
 
-			{uploadProgress !== null && (
+			{uploadImage.uploadProgress !== null && (
 				<ProgressBar
-					now={uploadProgress}
-					label={`${uploadProgress}%`}
+					now={uploadImage.uploadProgress}
+					label={`${uploadImage.uploadProgress}%`}
 					className="my-3"
 					animated
 					striped
