@@ -1,12 +1,14 @@
 import Container from 'react-bootstrap/Container'
-import { useAuthContext } from '../contexts/AuthContext'
+import UploadMeme from '../components/UploadMeme'
 
 const HomePage = () => {
-	const { currentUser } = useAuthContext()
-
 	return (
 		<Container className="py-3">
 			<h1 className="display-1">😂</h1>
+
+			<UploadMeme />
+
+			<hr className='my-4' />
 
 			<p className="display-2">Show me dem memes!</p>
 		</Container>
