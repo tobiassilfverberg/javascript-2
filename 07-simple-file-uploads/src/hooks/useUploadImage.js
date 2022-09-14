@@ -23,8 +23,10 @@ const useUploadImage = () => {
 			return
 		}
 
+		const prefix = Date.now()
+
 		// create a reference to upload the file to
-		const fileRef = ref(storage, `images/${image.name}`)
+		const fileRef = ref(storage, `images/${prefix}-${image.name}`)
 
 		// upload image to fileRef
 		const uploadTask = uploadBytesResumable(fileRef, image)
