@@ -21,8 +21,11 @@ const useUploadMeme = () => {
 		setIsUploading(null)
 
 		try {
+			// create filename to save image as
+			const storageFileName = `${Date.now()}-${image.name}`
+
 			// construct reference to storage
-			const storageRef = ref(storage, `memes/${image.name}`)
+			const storageRef = ref(storage, `memes/${storageFileName}`)
 
 			// start upload of image
 			const uploadTask = uploadBytesResumable(storageRef, image)
@@ -50,6 +53,7 @@ const useUploadMeme = () => {
 			await addDoc(collectionRef, {
 				created: serverTimestamp(),
 				name: image.name,
+				path: storageRef.fullPath,
 				type: image.type,
 				size: image.size,
 				user: currentUser.uid,
