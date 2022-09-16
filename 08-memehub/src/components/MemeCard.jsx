@@ -3,30 +3,32 @@ import Card from 'react-bootstrap/Card'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashAlt } from '@fortawesome/free-solid-svg-icons'
 import ModalImage from 'react-modal-image'
-// import useDeleteImage from '../hooks/useDeleteImage'
+import { useAuthContext } from '../contexts/AuthContext'
+import useDeleteMeme from '../hooks/useDeleteMeme'
 
 const ImageCard = ({ image }) => {
-	// const deleteImageMutation = useDeleteImage()
+	const { currentUser } = useAuthContext()
+	const deleteMemeMutation = useDeleteMeme()
 
 	return (
 		<>
-			<Card
-				// className={`image-card ${deleteImageMutation.isMutating ? 'mutating' : ''}`}
-				className={`image-card`}
+			<Card className={`image-card ${deleteMemeMutation.isMutating ? 'mutating' : ''}`}
 			>
 				<Card.Header>
 					<span className="image-filename" title={image.name}>
 						{image.name}
 					</span>
 					<div className="card-actions">
-						{/* <Button
-							variant="danger"
-							size="sm"
-							disabled={deleteImageMutation.isMutating}
-							onClick={() => deleteImageMutation.mutate(image)}
-						>
-							<FontAwesomeIcon icon={faTrashAlt} />
-						</Button> */}
+						{image.user === currentUser.uid && (
+							<Button
+								variant="danger"
+								size="sm"
+								disabled={deleteMemeMutation.isMutating}
+								onClick={() => deleteMemeMutation.mutate(image)}
+							>
+								<FontAwesomeIcon icon={faTrashAlt} />
+							</Button>
+						)}
 					</div>
 				</Card.Header>
 
