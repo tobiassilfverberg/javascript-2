@@ -31,6 +31,7 @@ const Navigation = () => {
 								<>
 									{/* User is logged in */}
 									<Nav.Link as={NavLink} end to="/">Home</Nav.Link>
+									<Nav.Link as={NavLink} end to="/my-memes">My Memes</Nav.Link>
 
 									<NavDropdown title={
 										userPhotoUrl
