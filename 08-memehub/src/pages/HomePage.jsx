@@ -1,7 +1,11 @@
 import Container from 'react-bootstrap/Container'
 import UploadMeme from '../components/UploadMeme'
+import MemeGrid from '../components/MemeGrid'
+import useMemes from '../hooks/useMemes'
 
 const HomePage = () => {
+	const memesQuery = useMemes()
+
 	return (
 		<Container className="py-3">
 			<h1 className="display-1">😂</h1>
@@ -10,7 +14,7 @@ const HomePage = () => {
 
 			<hr className='my-4' />
 
-			<p className="display-2">Show me dem memes!</p>
+			<MemeGrid query={memesQuery} />
 		</Container>
 	)
 }
