@@ -5,7 +5,7 @@ import './assets/scss/App.scss'
 const App = () => {
 	return (
 		<Container className="my-5">
-			<TodoCounter />
+			<TodoCounter count={0}/>
 		</Container>
 	)
 }
