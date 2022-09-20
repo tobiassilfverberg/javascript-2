@@ -3,7 +3,7 @@ const TodoCounter = ({ count }) => {
 		? count === 1
 			?  <span> You only got one thing left to do, get on it! </span>
 			: <span> You have {count} todos left </span>
-		: <span> You ain't got nothing to do" </span>
+		: <span> You got nothing to do </span>
 
 	return (
 		<div className="todo-counter mt-2">
