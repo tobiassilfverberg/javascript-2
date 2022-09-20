@@ -1,13 +1,13 @@
 import Container from 'react-bootstrap/Container'
-import TodoCounter from './components/TodoCounter'
+import LoginForm from './components/LoginForm'
 import './assets/scss/App.scss'
 
 const App = () => {
 	return (
 		<Container className="my-5">
-			<TodoCounter count={0}/>
+			<LoginForm />
 		</Container>
 	)
 }
 
-export default App
+	export default App
