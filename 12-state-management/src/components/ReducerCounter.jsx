@@ -16,6 +16,11 @@ const initialState = {
 
 const reducer = (state, action) => {
 	switch (action.type) {
+		case ACTIONS.ADD:
+			return {
+				count: state.count + action.payload.amount
+			}
+
 		case ACTIONS.INCREMENT:
 			return {
 				count: state.count + 1
@@ -24,6 +29,11 @@ const reducer = (state, action) => {
 		case ACTIONS.DECREMENT:
 			return {
 				count: state.count - 1
+			}
+
+		case ACTIONS.SUBTRACT:
+			return {
+				count: state.count - action.payload.amount
 			}
 
 		case ACTIONS.RESET:
@@ -40,15 +50,23 @@ const ReducerCounter = () => {
 
 	return (
 		<div className="reducer-counter">
-			<Button variant="warning" onClick={ () => null }>-10</Button>
-			<Button variant="warning" onClick={ () => null }>-5</Button>
+			<Button variant="warning" onClick={ () => dispatch(
+				{ type: ACTIONS.SUBTRACT, payload: { amount: 10 } }
+			) }>-10</Button>
+			<Button variant="warning" onClick={ () => dispatch(
+				{ type: ACTIONS.SUBTRACT, payload: { amount: 5 } }
+			) }>-5</Button>
 			<Button variant="warning" onClick={ () => dispatch( { type: ACTIONS.DECREMENT } ) }>-</Button>
 
 			<span className="points">{state.count}</span>
 
 			<Button variant="success" onClick={ () => dispatch( { type: ACTIONS.INCREMENT } ) }>+</Button>
-			<Button variant="success" onClick={ () => null }>+5</Button>
-			<Button variant="success" onClick={ () => null }>+10</Button>
+			<Button variant="success" onClick={ () => dispatch(
+				{ type: ACTIONS.ADD, payload: { amount: 5 } }
+			) }>+5</Button>
+			<Button variant="success" onClick={ () => dispatch(
+				{ type: ACTIONS.ADD, payload: { amount: 10 } }
+			) }>+10</Button>
 
 			<Button variant="danger" onClick={ () =>  dispatch( { type: ACTIONS.RESET } ) }>🧹</Button>
 		</div>
