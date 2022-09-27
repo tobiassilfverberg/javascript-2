@@ -2,21 +2,23 @@ import { startTransition } from 'react'
 import { useReducer } from 'react'
 import Button from 'react-bootstrap/Button'
 
+const ACTIONS = {
+	INCREMENT: 'increment',
+	DECREMENT: 'decrement',
+}
+
 const initialState = {
 	count: 0,
 }
 
 const reducer = (state, action) => {
-	console.log("Got request for action:", action)
-	console.log("State is currently:", state)
-
 	switch (action.type) {
-		case 'increment':
+		case ACTIONS.INCREMENT:
 			// increment count
 			return {
 				count: state.count + 1
 			}
-		case 'decrement':
+		case ACTIONS.DECREMENT:
 			// decrement counter
 			return {
 				count: state.count - 1
@@ -32,11 +34,11 @@ const ReducerCounter = () => {
 
 	return (
 		<div className="reducer-counter">
-			<Button variant="warning" onClick={() => dispatch( { type: 'decrement' } )}>-</Button>
+			<Button variant="warning" onClick={() => dispatch( { type: ACTIONS.DECREMENT } )}>-</Button>
 
 			<span className="points">{state.count}</span>
 
-			<Button variant="success" onClick={() => dispatch( { type: 'increment' } )}>+</Button>
+			<Button variant="success" onClick={() => dispatch( { type: ACTIONS.INCREMENT } )}>+</Button>
 		</div>
 	)
 }
