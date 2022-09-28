@@ -1,5 +1,5 @@
 const initialState = {
-	balance: 0,
+	balance: 1000,
 }
 
 const accountReducer = (state = initialState, action) => {
